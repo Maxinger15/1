@@ -11,7 +11,7 @@ module.exports = ({ logger, config, battlefield, store }) => {
     logger.warn("Timer was set lower than 120000. Used default 120000 to ensure the best work of the plugin")
   }
   let getPlayerInterval = setInterval(calculateMeridian, time);
-  let passiv = true;
+  let passiv = false;
   let blacklist = [];
   let meridian = null;
   let multi = config.pingMulti;

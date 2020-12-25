@@ -4,14 +4,14 @@
 module.exports = ({ logger, config, battlefield, store }) => {
   /** @type {import("vu-rcon").Battlefield.MapEntry[]} */
   logger.info("Pingkicker active");
-  let time = 120000
-  if(config.timer >= 120000){
-    time = config.timer
+  let time = 60000
+  if(config.timer >= 60){
+    time = config.timer*1000
   }else{
-    logger.warn("Timer was set lower than 120000. Used default 120000 to ensure the best work of the plugin")
+    logger.warn("Timer was set lower than 60 Seconds. Used default 60 Seconds to ensure the best work of the plugin")
   }
   let getPlayerInterval = setInterval(calculateMeridian, time);
-  let passiv = false;
+  let passiv = config.PassiveMode;
   let blacklist = [];
   let meridian = null;
   let multi = config.pingMulti;
@@ -23,7 +23,7 @@ module.exports = ({ logger, config, battlefield, store }) => {
       if (el === data.player.name) {
         blacklist.splice(index, 1);
         if (passiv) {
-          logger.info("Removed player " + data.player.name + ". Reason: Left");
+          logger.info("Removed player " + data.player.name + ". Reason: Left game");
         }
       }
     });
@@ -37,7 +37,13 @@ module.exports = ({ logger, config, battlefield, store }) => {
       sum += el.ping;
     });
     meridian = parseInt(sum / length);
+    if(passiv){
+      logger.info("Server ping average: "+meridian)
+    }
     meridian = meridian * multi;
+    if(passiv){
+      logger.info("Calculated maximum ping: "+meridian)
+    }
     await kickPlayers(players);
   }
 

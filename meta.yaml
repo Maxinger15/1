@@ -1,0 +1,24 @@
+#name of the plugin
+name: "PingEnforcer"
+#description of the plugin
+description: "Automatic kick by ping"
+#the version string for the plugin
+version: "1.0.0"
+#backend which the plugin can run under "BF3" and "VU" allowed
+#"BF3" plugins will run under BF3 and VU
+backend: "BF3"
+#plugin entry point
+entry: "index.js"
+vars:
+  - name: "timer"
+    description: "How often the ping values should be checked in milliseconds"
+    default: 120000
+    type: "number"
+  - name: "savePing"
+    description: "Players with lower pings than that will never be kicked"
+    type: "number"
+    default: 100
+  - name: "pingMulti"
+    description: "The average ping will be multiplicatet with this value. All players with higher pings will be kicked" 
+    type: "number"
+    default: 1.5

@@ -3,12 +3,11 @@
  */
 module.exports = ({ logger, config, battlefield, store }) => {
   /** @type {import("vu-rcon").Battlefield.MapEntry[]} */
-  logger.info("Pingkicker active");
   let time = 60000
   if(config.timer >= 60){
     time = config.timer*1000
   }else{
-    logger.warn("Timer was set lower than 60 Seconds. Used default 60 Seconds to ensure the best work of the plugin")
+    logger.warn("Timer cannot be set lower than 60 seconds, 60 seconds will be used.")
   }
   let getPlayerInterval = setInterval(calculateMeridian, time);
   let passiv = config.PassiveMode;
@@ -23,7 +22,7 @@ module.exports = ({ logger, config, battlefield, store }) => {
       if (el === data.player.name) {
         blacklist.splice(index, 1);
         if (passiv) {
-          logger.info("Removed player " + data.player.name + ". Reason: Left game");
+          //logger.info("Removed player " + data.player.name + ". Reason: Left game");
         }
       }
     });
@@ -38,11 +37,11 @@ module.exports = ({ logger, config, battlefield, store }) => {
     });
     meridian = parseInt(sum / length);
     if(passiv){
-      logger.info("Server ping average: "+meridian)
+      //logger.info("Server ping average: "+meridian)
     }
     meridian = meridian * multi;
     if(passiv){
-      logger.info("Calculated maximum ping: "+meridian)
+      l//ogger.info("Calculated maximum ping: "+meridian)
     }
     await kickPlayers(players);
   }
@@ -53,7 +52,7 @@ module.exports = ({ logger, config, battlefield, store }) => {
       if (player != undefined) {
         if (player.ping > config.savePing && player.ping > meridian) {
           if (passiv) {
-            logger.warn("Would kick player " + el);
+            logger.info("Would kick player " + el + " for ping " + player.ping + "ms");
             blacklist.splice(index, 1);
           } else {
             battlefield.playerKick(el, "High ping");
@@ -64,12 +63,12 @@ module.exports = ({ logger, config, battlefield, store }) => {
         }
       }
     });
-    logger.info("--------------------------");
+    //logger.info("--------------------------");
     players = await battlefield.getPlayers()
     players.forEach((el) => {
       if (el.ping > config.savePing && el.ping > meridian && !blacklist.includes(el.name)) {
         if (passiv) {
-          logger.info("Added " + el.name + " to blacklist");
+          //logger.info("Added " + el.name + " to blacklist");
         }
         if(!passiv){
           battlefield.say("[PingEnforcer] Your ping is "+el.ping,["player",el.name])

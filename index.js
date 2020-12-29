@@ -41,7 +41,7 @@ module.exports = ({ logger, config, battlefield, store }) => {
     }
     meridian = meridian * multi;
     if(passiv){
-      l//ogger.info("Calculated maximum ping: "+meridian)
+      //logger.info("Calculated maximum ping: "+meridian)
     }
     await kickPlayers(players);
   }
